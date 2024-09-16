@@ -65,6 +65,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+// Agregar los controladores
+builder.Services.AddControllers();
+
 // Configurar Swagger
 builder.Services.AddSwaggerGen(c =>
 {
@@ -95,7 +98,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
 
 // 2. Build the app
 var app = builder.Build();
