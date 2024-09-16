@@ -30,7 +30,16 @@ builder.Services.AddCors(options =>
 
 // Habilitar autenticación y JWT (si es necesario)
 var jwtKey = builder.Configuration["Jwt:Key"];
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new ArgumentNullException("Jwt:Key", "La clave JWT no está configurada o es nula.");
+}
+
+Console.WriteLine($"JWT Key: {jwtKey}"); // Para depuración
+
 var key = Encoding.ASCII.GetBytes(jwtKey);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
