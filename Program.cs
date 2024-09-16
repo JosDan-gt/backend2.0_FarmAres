@@ -4,8 +4,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
-
+using MyProyect_Granja.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,17 +17,23 @@ var connectionString = builder.Configuration.GetConnectionString("GranjaAres1Dat
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Inyección de dependencias para los servicios (como IClienteService)
-//builder.Services.AddScoped<IClienteService, ClienteService>();
+// Inyección de dependencias para los servicios
+builder.Services.AddScoped<IClasificacionHuevoService, ClasificacionHuevoService>();
+builder.Services.AddScoped<ICorralService, CorralService>();
+builder.Services.AddScoped<IEstadoLoteService, EstadoLoteService>();
+builder.Services.AddScoped<IProduccionService, ProduccionService>();
+builder.Services.AddScoped<IRazaGService, RazaGService>();
+builder.Services.AddScoped<ILoteService, LoteService>();
+builder.Services.AddScoped<IVentasService, VentasService>();
 
 // Habilitar CORS (configura los orígenes que necesites permitir)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// Habilitar autenticación y JWT (si es necesario)
+// Habilitar autenticación y JWT
 var jwtKey = builder.Configuration["Jwt:Key"];
 
 if (string.IsNullOrEmpty(jwtKey))
