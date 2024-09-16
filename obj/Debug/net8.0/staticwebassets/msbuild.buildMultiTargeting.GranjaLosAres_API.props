@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\GranjaLosAres_API.props" />
+</Project>
