@@ -1,5 +1,5 @@
-﻿# Fase de construcción
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+﻿# Usa la imagen de .NET SDK 8.0 para la fase de construcción
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Copiar los archivos de proyecto y restaurar las dependencias
@@ -10,8 +10,8 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o /app/out
 
-# Fase de producción
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+# Usa la imagen de .NET Runtime 8.0 para la fase de producción
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
