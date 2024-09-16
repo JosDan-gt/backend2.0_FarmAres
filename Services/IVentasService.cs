@@ -3,8 +3,9 @@ using GranjaLosAres_API.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using GranjaLosAres_API.Dtos;
 
-namespace MyProyect_Granja.Services
+namespace GranjaLosAres_API.Services
 {
     public class VentasService : IVentasService
     {

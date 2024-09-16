@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MyProyect_Granja.Services;
+using GranjaLosAres_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,11 +70,11 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 
-    // Configuración de JWT en Swagger
+    // Definición de seguridad para JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Por favor ingrese el token JWT en este formato: Bearer {token}",
+        Description = "Please enter JWT with Bearer into field",
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
@@ -95,6 +95,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
 
 // 2. Build the app
 var app = builder.Build();

@@ -1,7 +1,8 @@
 ﻿using GranjaLosAres_API.Models;
 using System.Threading.Tasks;
+using GranjaLosAres_API.Dtos;
 
-namespace MyProyect_Granja.Services
+namespace GranjaLosAres_API.Services
 {
     public interface IClasificacionHuevoService
     {

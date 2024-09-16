@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace MyProyect_Granja.Services
+namespace GranjaLosAres_API.Services
 {
     public class ClasificacionHuevoService : IClasificacionHuevoService
     {

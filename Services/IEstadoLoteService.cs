@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace MyProyect_Granja.Services
+namespace GranjaLosAres_API.Services
 {
     public class EstadoLoteService : IEstadoLoteService
     {
