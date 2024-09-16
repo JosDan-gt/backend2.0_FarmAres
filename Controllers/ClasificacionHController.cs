@@ -6,7 +6,7 @@ using GranjaLosAres_API.Services;
 using GranjaLosAres_API.Data;
 namespace GranjaLosAres_API.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/clasificacionhuevo")]
     public class ClasificacionHController : ControllerBase
@@ -20,7 +20,7 @@ namespace GranjaLosAres_API.Controllers
             _clasificacionHuevoService = clasificacionHuevoService;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("/clasific1")]
         public async Task<ActionResult<IEnumerable<ClasificacionHuevo>>> GetClasificacionH(int idLote)
         {
@@ -72,15 +72,13 @@ namespace GranjaLosAres_API.Controllers
             }
             catch (Exception ex)
             {
-                // Log del error
-                // _logger.LogError(ex, "Error al obtener clasificaciones de huevos");
 
                 return StatusCode(500, "Ocurrió un error al procesar la solicitud. Inténtelo de nuevo más tarde.");
             }
         }
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("/viewstock")]
         public async Task<ActionResult<IEnumerable<VistaStockRestanteHuevo>>> GetVistaStockRestante(int idLote)
         {
@@ -90,7 +88,7 @@ namespace GranjaLosAres_API.Controllers
             return Ok(datosVSH);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("/fechasproduccion/{idLote}")]
         public async Task<ActionResult<IEnumerable<ProduccionDto>>> GetFechasProduccion(int idLote)
         {
@@ -125,7 +123,7 @@ namespace GranjaLosAres_API.Controllers
             public int IdProd { get; set; }
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("/postclasificacion")]
         public async Task<IActionResult> Post([FromBody] ClasificacionHuevo clasificacionHuevo)
         {
@@ -154,7 +152,7 @@ namespace GranjaLosAres_API.Controllers
 
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("/putclasificacion")]
         public async Task<IActionResult> Put([FromBody] ClasificacionHuevo UpClasificacionHuevo)
         {

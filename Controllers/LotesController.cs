@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GranjaLosAres_API.Controllers
 {
-    //[Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = "Admin, User")]
     [ApiController]
     [Route("api/lotes")]
     public class LotesController : Controller
@@ -24,8 +24,7 @@ namespace GranjaLosAres_API.Controllers
             _loteService = loteService;
         }
 
-        // Obtiene los lotes, activos o dados de baja según el parámetro `dadosDeBaja`.
-        //[Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lote>>> GetLotes(bool? dadosDeBaja = null)
         {
@@ -52,8 +51,8 @@ namespace GranjaLosAres_API.Controllers
             return Ok(lotes);
         }
 
-        // Registra un nuevo lote.
-        //[Authorize(Roles = "Admin")]
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost("/postLote")]
         public async Task<IActionResult> Post([FromBody] Lote lote)
         {
@@ -78,8 +77,7 @@ namespace GranjaLosAres_API.Controllers
             }
         }
 
-        // Actualiza un lote existente.
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("/putLote")]
         public async Task<IActionResult> Put([FromBody] Lote lote)
         {
@@ -104,8 +102,7 @@ namespace GranjaLosAres_API.Controllers
             }
         }
 
-        // Actualiza el estado de un lote (por ejemplo, eliminar o reactivar).
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("/updateestadolot")]
         public async Task<IActionResult> PutEstado(int idLote, [FromBody] EstadoDto dto)
         {
@@ -128,8 +125,7 @@ namespace GranjaLosAres_API.Controllers
             }
         }
 
-        // Actualiza el estado de baja de un lote.
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("putLoteBaja")]
         public async Task<IActionResult> PutLoteBaja(int idLote, [FromBody] Lote lote)
         {
@@ -145,7 +141,7 @@ namespace GranjaLosAres_API.Controllers
             return Ok("Estado del lote actualizado correctamente.");
         }
 
-        // DTO para actualizar el estado del lote.
+        
         public class EstadoDto
         {
             public bool Estado { get; set; }

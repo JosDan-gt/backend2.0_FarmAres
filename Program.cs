@@ -33,18 +33,7 @@ builder.Services.AddCors(options =>
         policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-// Habilitar autenticación y JWT
-var jwtKey = builder.Configuration["Jwt:Key"];
-
-if (string.IsNullOrEmpty(jwtKey))
-{
-    throw new ArgumentNullException("Jwt:Key", "La clave JWT no está configurada o es nula.");
-}
-
-Console.WriteLine($"JWT Key: {jwtKey}"); // Para depuración
-
-var key = Encoding.ASCII.GetBytes(jwtKey);
-
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,16 +43,36 @@ builder.Services.AddAuthentication(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine("Token inválido: " + context.Exception.Message);
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Console.WriteLine("Token válido para: " + context.Principal.Identity.Name);
+            return Task.CompletedTask;
+        }
+    };
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
     };
 });
 
+
+
 builder.Services.AddAuthorization();
+
 
 // Agregar los controladores
 builder.Services.AddControllers();
@@ -121,8 +130,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
 // Habilitar autenticación y autorización
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication();  // Necesario para la autenticación
+app.UseAuthorization();   // Necesario para la autorización
 
 // Mapear los controladores
 app.MapControllers();

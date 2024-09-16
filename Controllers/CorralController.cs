@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GranjaLosAres_API.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/corralcontroller")]
     public class CorralController : Controller
@@ -21,7 +21,7 @@ namespace GranjaLosAres_API.Controllers
             _corralservice = corralservice;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("/getcorral")]
         public async Task<ActionResult<IEnumerable<Corral>>> GetCorral()
         {
@@ -38,7 +38,7 @@ namespace GranjaLosAres_API.Controllers
 
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("/postcorral")]
         public async Task<IActionResult> Post([FromBody] Corral corral)
         {
@@ -67,7 +67,7 @@ namespace GranjaLosAres_API.Controllers
         }
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("/putcorral")]
         public async Task<IActionResult> Put([FromBody] Corral corral)
         {
@@ -96,7 +96,7 @@ namespace GranjaLosAres_API.Controllers
         }
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("/updestadocorral")]
         public async Task<IActionResult> PutCorral(int id, [FromBody] EstadoDlt dto)
         {
