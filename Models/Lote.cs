@@ -25,9 +25,9 @@ public partial class Lote
 
     public virtual ICollection<EstadoLote> EstadoLotes { get; set; } = new List<EstadoLote>();
 
-    public virtual Corral IdCorralNavigation { get; set; } = null!;
+    public virtual Corral? IdCorralNavigation { get; set; } = null!;
 
-    public virtual RazaGallina IdRazaNavigation { get; set; } = null!;
+    public virtual RazaGallina? IdRazaNavigation { get; set; } = null!;
 
     public virtual ICollection<ProduccionGallina> ProduccionGallinas { get; set; } = new List<ProduccionGallina>();
 }

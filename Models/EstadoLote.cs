@@ -21,7 +21,7 @@ public partial class EstadoLote
 
     public bool? Estado { get; set; }
 
-    public virtual Etapa IdEtapaNavigation { get; set; } = null!;
+    public virtual Etapa? IdEtapaNavigation { get; set; } = null!;
 
-    public virtual Lote IdLoteNavigation { get; set; } = null!;
+    public virtual Lote? IdLoteNavigation { get; set; } = null!;
 }

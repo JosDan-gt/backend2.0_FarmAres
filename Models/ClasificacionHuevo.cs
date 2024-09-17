@@ -23,5 +23,5 @@ public partial class ClasificacionHuevo
 
     public DateTime? FechaClaS { get; set; }
 
-    public virtual ProduccionGallina IdProdNavigation { get; set; } = null!;
+    public virtual ProduccionGallina? IdProdNavigation { get; set; } = null!;
 }

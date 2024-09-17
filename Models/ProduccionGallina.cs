@@ -25,5 +25,5 @@ public partial class ProduccionGallina
 
     public virtual ICollection<ClasificacionHuevo> ClasificacionHuevos { get; set; } = new List<ClasificacionHuevo>();
 
-    public virtual Lote IdLoteNavigation { get; set; } = null!;
+    public virtual Lote? IdLoteNavigation { get; set; } = null!;
 }
