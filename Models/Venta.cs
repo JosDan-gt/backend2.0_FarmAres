@@ -7,7 +7,7 @@ public partial class Venta
 {
     public int VentaId { get; set; }
 
-    public DateOnly FechaVenta { get; set; }
+    public DateTime FechaVenta { get; set; }
 
     public int? ClienteId { get; set; }
 
