@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GranjaLosAres_API.Models;
 
@@ -15,5 +16,6 @@ public partial class Cliente
 
     public bool? Estado { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Venta> Venta { get; set; } = new List<Venta>();
 }
