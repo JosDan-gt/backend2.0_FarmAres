@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GranjaLosAres_API.Models;
 
@@ -25,6 +26,7 @@ public partial class DetallesVentum
 
     public bool? Estado { get; set; }
 
+    [JsonIgnore]
     public virtual Producto? Producto { get; set; }
 
     public virtual Venta? Venta { get; set; }

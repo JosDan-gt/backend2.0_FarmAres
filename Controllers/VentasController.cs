@@ -11,7 +11,7 @@ using GranjaLosAres_API.Data;
 
 namespace GranjaLosAres_API.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class VentasController : ControllerBase
@@ -218,7 +218,7 @@ namespace GranjaLosAres_API.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("VentasActivas")]
         public async Task<IActionResult> ObtenerVentasActivas()
         {
@@ -236,7 +236,7 @@ namespace GranjaLosAres_API.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("DetallesVentaActivos/{ventaId}")]
         public async Task<IActionResult> ObtenerDetallesVentaActivos(int ventaId)
         {
