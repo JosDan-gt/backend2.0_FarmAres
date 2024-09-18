@@ -22,7 +22,5 @@ namespace GranjaLosAres_API.Models
         // Relación con el modelo Role
         public virtual Role? Role { get; set; }
 
-        // Nueva relación para almacenar los RefreshTokens
-        public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 }

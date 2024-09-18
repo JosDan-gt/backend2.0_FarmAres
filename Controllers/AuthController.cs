@@ -6,7 +6,6 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using GranjaLosAres_API.Models;
 using GranjaLosAres_API.Data;
-using System.Security.Cryptography;
 
 namespace GranjaLosAres_API.Controllers
 {
@@ -39,45 +38,8 @@ namespace GranjaLosAres_API.Controllers
             Console.WriteLine("El rol del usuario es: " + user.Role?.Nombre);
 
             var accessToken = GenerateJwtToken(user);
-            var refreshToken = GenerateRefreshToken();
-            await SaveRefreshToken(user, refreshToken);
 
-            return Ok(new { accessToken, refreshToken });
-
-        }
-
-        [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest model)
-        {
-            var user = await _context.Usuarios
-                .Include(u => u.RefreshTokens)  // Asegúrate de incluir los tokens de actualización
-                .SingleOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == model.RefreshToken && !rt.IsRevoked));
-
-            if (user == null)
-            {
-                return Unauthorized("Usuario no encontrado o token de actualización no válido.");
-            }
-
-            var validRefreshToken = user.RefreshTokens.SingleOrDefault(rt => rt.Token == model.RefreshToken);
-
-            if (validRefreshToken == null)
-            {
-                return Unauthorized("Refresh token no válido.");
-            }
-
-            if (validRefreshToken.Expiration < DateTime.Now)
-            {
-                return Unauthorized("Refresh token expirado.");
-            }
-
-            // Generar un nuevo token de acceso
-            var newAccessToken = GenerateJwtToken(user);
-            var newRefreshToken = GenerateRefreshToken();
-
-            validRefreshToken.IsRevoked = true;  // Invalidar el token anterior
-            await SaveRefreshToken(user, newRefreshToken);
-
-            return Ok(new { accessToken = newAccessToken, refreshToken = newRefreshToken });
+            return Ok(new { accessToken });
         }
 
         [HttpPost("register")]
@@ -119,7 +81,6 @@ namespace GranjaLosAres_API.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, "SinRol"));
             }
 
-
             var expiresInMinutesString = _configuration["Jwt:AccessTokenExpirationMinutes"];
             if (string.IsNullOrEmpty(expiresInMinutesString))
             {
@@ -139,39 +100,10 @@ namespace GranjaLosAres_API.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
-        }
-
-        private async Task SaveRefreshToken(Usuario user, string refreshToken)
-        {
-            var refreshTokenEntity = new RefreshToken
-            {
-                Token = refreshToken,
-                Expiration = DateTime.Now.AddDays(double.Parse(_configuration["Jwt:RefreshTokenExpirationDays"])),
-                UserId = user.Id,
-                IsRevoked = false
-            };
-
-            user.RefreshTokens.Add(refreshTokenEntity);
-            await _context.SaveChangesAsync();
-        }
-
         public class LoginModel
         {
             public string Username { get; set; }
             public string Password { get; set; }
-        }
-
-        public class RefreshTokenRequest
-        {
-            public string RefreshToken { get; set; }
         }
     }
 }

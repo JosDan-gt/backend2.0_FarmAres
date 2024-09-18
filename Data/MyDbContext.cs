@@ -44,8 +44,6 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
-
     public virtual DbSet<Venta> Ventas { get; set; }
 
     public virtual DbSet<VistaClasificacionHuevo> VistaClasificacionHuevos { get; set; }
@@ -291,28 +289,6 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.RoleId)
                 .HasConstraintName("FK__Usuarios__RoleId__628FA481");
-        });
-
-        modelBuilder.Entity<RefreshToken>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__RefreshToken__3214EC07");
-
-            entity.Property(e => e.Token)
-                .IsRequired()
-                .HasMaxLength(255);
-
-            entity.Property(e => e.Expiration)
-                .HasColumnType("datetime")
-                .IsRequired();
-
-            entity.Property(e => e.IsRevoked)
-                .HasDefaultValue(false);
-
-            // Cambiar el tipo de ForeignKey UserId a int
-            entity.HasOne(d => d.Usuario)
-                .WithMany(p => p.RefreshTokens)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_RefreshToken_Usuario");
         });
 
 
