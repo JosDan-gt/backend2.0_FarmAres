@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using GranjaLosAres_API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace GranjaLosAres_API.Data;
 
 public partial class MyDbContext : DbContext
 {
+    private readonly IConfiguration _configuration;
     public MyDbContext()
     {
     }
 
-    public MyDbContext(DbContextOptions<MyDbContext> options)
+    public MyDbContext(DbContextOptions<MyDbContext> options, IConfiguration configuration)
         : base(options)
     {
+        _configuration = configuration;
     }
 
     public virtual DbSet<ClasificacionHuevo> ClasificacionHuevos { get; set; }
@@ -53,9 +56,14 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<VistaStockRestanteHuevo> VistaStockRestanteHuevos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("workstation id=granjadatabase.mssql.somee.com;packet size=4096;user id=josedan_SQLLogin_1;pwd=dnivs4sj6g;data source=granjadatabase.mssql.somee.com;persist security info=False;initial catalog=granjadatabase;TrustServerCertificate=True");
-
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            // Aquí estamos obteniendo la cadena de conexión desde el appsettings.json
+            var connectionString = _configuration.GetConnectionString("GranjaAres1Database");
+            optionsBuilder.UseSqlServer(connectionString);
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ClasificacionHuevo>(entity =>
