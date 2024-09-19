@@ -11,9 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. Add services to the container.
 
 
-// Configuración del DbContext con SQL Server
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GranjaAres1Database")));
+
 
 
 // Inyección de dependencias para los servicios

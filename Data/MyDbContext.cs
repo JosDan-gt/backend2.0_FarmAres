@@ -14,7 +14,7 @@ public partial class MyDbContext : DbContext
     }
 
     public MyDbContext(DbContextOptions<MyDbContext> options, IConfiguration configuration)
-        : base(options)
+    : base(options)
     {
         _configuration = configuration;
     }
