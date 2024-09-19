@@ -10,12 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // 1. Add services to the container.
 
-// Agregar la configuración de la cadena de conexión de la base de datos desde appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("GranjaAres1Database");
 
 // Configuración del DbContext con SQL Server
 builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GranjaAres1Database")));
+
 
 // Inyección de dependencias para los servicios
 builder.Services.AddScoped<IClasificacionHuevoService, ClasificacionHuevoService>();
@@ -113,7 +112,6 @@ var app = builder.Build();
 
 // 3. Configure the HTTP request pipeline.
 
-// Solo habilitar Swagger en desarrollo
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -122,6 +120,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
 }
+
 
 // Redirección HTTP a HTTPS
 app.UseHttpsRedirection();

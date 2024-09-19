@@ -59,7 +59,6 @@ public partial class MyDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            // Aquí estamos obteniendo la cadena de conexión desde el appsettings.json
             var connectionString = _configuration.GetConnectionString("GranjaAres1Database");
             optionsBuilder.UseSqlServer(connectionString);
         }
