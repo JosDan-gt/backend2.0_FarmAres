@@ -11,8 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. Add services to the container.
 
 
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__GranjaAres1Database")
+                      ?? builder.Configuration.GetConnectionString("GranjaAres1Database");
+
 builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("GranjaAres1Database")));
+    options.UseSqlServer(connectionString));
+
 
 
 
