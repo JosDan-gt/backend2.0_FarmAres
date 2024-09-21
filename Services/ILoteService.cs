@@ -37,10 +37,11 @@ namespace GranjaLosAres_API.Services
                 new SqlParameter("@newCantidad", lote.CantidadG),
                 new SqlParameter("@newIdRaza", lote.IdRaza),
                 new SqlParameter("@newIdCorral", lote.IdCorral),
-                new SqlParameter("@newNumLote", lote.NumLote)
+                new SqlParameter("@newNumLote", lote.NumLote),
+                new SqlParameter("@newFechaAdq", lote.FechaAdq)
             };
 
-            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[ActualizarLote] @IdLote, @newCantidad, @newIdRaza, @newIdCorral, @newNumLote", parameters);
+            await _context.Database.ExecuteSqlRawAsync("EXEC [dbo].[ActualizarLote] @IdLote, @newCantidad, @newIdRaza, @newIdCorral, @newNumLote, @newFechaAdq", parameters);
         }
     }
 }

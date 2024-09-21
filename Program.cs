@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using GranjaLosAres_API.Services;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__Gr
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"/path/to/keys"))
+    .SetApplicationName("MyApp");
 
 
 
@@ -127,7 +131,7 @@ if (app.Environment.IsDevelopment())
 
 
 // Redirección HTTP a HTTPS
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // Habilitar CORS
 app.UseCors("AllowAllOrigins");
