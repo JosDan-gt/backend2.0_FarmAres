@@ -22,6 +22,7 @@ namespace GranjaLosAres_API.Controllers
             _context = context;
         }
 
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
@@ -37,27 +38,13 @@ namespace GranjaLosAres_API.Controllers
             // Depuración: Verificar si el rol está presente
             Console.WriteLine("El rol del usuario es: " + user.Role?.Nombre);
 
+
             var accessToken = GenerateJwtToken(user);
 
             return Ok(new { accessToken });
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Usuario usuario)
-        {
-            if (await _context.Usuarios.AnyAsync(u => u.NombreUser == usuario.NombreUser || u.Email == usuario.Email))
-            {
-                return BadRequest("El nombre de usuario o el correo electrónico ya están en uso.");
-            }
-
-            usuario.FechaDeRegistro = DateTime.Now;
-            usuario.Estado = true;
-
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Usuario registrado exitosamente" });
-        }
+        
 
         private string GenerateJwtToken(Usuario user)
         {

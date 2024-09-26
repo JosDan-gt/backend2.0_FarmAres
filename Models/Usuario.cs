@@ -11,7 +11,7 @@ namespace GranjaLosAres_API.Models
 
         public string Email { get; set; } = null!;
 
-        public string Contrasena { get; set; } = null!;
+        public string? Contrasena { get; set; } = null!;
 
         public int? RoleId { get; set; }
 
