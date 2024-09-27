@@ -97,21 +97,37 @@ namespace GranjaLosAres_API.Controllers
             var estadoLote = await _context.EstadoLotes.FindAsync(id);
             if (estadoLote == null)
             {
-                return NotFound(new { message = "Estado Lote no encontrada." });
+                return NotFound(new { message = "Estado Lote no encontrado." });
             }
 
+            // Guardamos la cantidad de bajas antes de realizar la actualización
+            var bajasDelRegistroEliminado = estadoLote.Bajas;
+
+            // Actualizamos el estado a eliminado lógicamente
             estadoLote.Estado = dto.Estado;
+
+            // Obtener el lote relacionado
+            var lote = await _context.Lotes.FindAsync(estadoLote.IdLote);
+            if (lote == null)
+            {
+                return NotFound(new { message = "Lote no encontrado." });
+            }
+
+            // Sumar las bajas del registro eliminado a la cantidad actual de gallinas en el lote
+            lote.CantidadGctual += bajasDelRegistroEliminado;
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { success = true, message = "Estado eliminado correctamente" });
+                return Ok(new { success = true, message = "Estado eliminado correctamente", bajasDelRegistroEliminado });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
+
+
 
         public class EstadoDtoState
         {
