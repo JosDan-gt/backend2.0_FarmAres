@@ -20,6 +20,7 @@ public partial class EstadoLote
     public int IdLote { get; set; }
 
     public bool? Estado { get; set; }
+    public string Descripcion { get; set; }
 
     public virtual Etapa? IdEtapaNavigation { get; set; } = null!;
 

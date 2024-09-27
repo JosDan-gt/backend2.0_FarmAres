@@ -23,11 +23,12 @@ namespace GranjaLosAres_API.Services
                 new SqlParameter("@Fecha_Registro", estadoLote.FechaRegistro),
                 new SqlParameter("@Semana", estadoLote.Semana),
                 new SqlParameter("@Id_Etapa", estadoLote.IdEtapa),
-                new SqlParameter("@IdLote", estadoLote.IdLote)
+                new SqlParameter("@IdLote", estadoLote.IdLote),
+                new SqlParameter("@Descripcion", estadoLote.Descripcion)
             };
 
             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC [dbo].[InsertarEstadoLote] @Bajas, @Fecha_Registro, @Semana, @Id_Etapa, @IdLote", parameters);
+                "EXEC [dbo].[InsertarEstadoLote] @Bajas, @Fecha_Registro, @Semana, @Id_Etapa, @IdLote, @Descripcion", parameters);
         }
 
         public async Task UpdEstadoLoteAsync(EstadoLote estadoLote)
@@ -38,11 +39,12 @@ namespace GranjaLosAres_API.Services
                 new SqlParameter("@Bajas", estadoLote.Bajas),
                 new SqlParameter("@Semana", estadoLote.Semana),
                 new SqlParameter("@Id_Etapa", estadoLote.IdEtapa),
-                new SqlParameter("@IdLote", estadoLote.IdLote)
+                new SqlParameter("@IdLote", estadoLote.IdLote),
+                new SqlParameter("@Descripcion", estadoLote.Descripcion)
             };
 
             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC [dbo].[ActualizarEstadoLoteRegistro] @Id_Estado, @Bajas, @Semana, @Id_Etapa, @IdLote", parameters);
+                "EXEC [dbo].[ActualizarEstadoLoteRegistro] @Id_Estado, @Bajas, @Semana, @Id_Etapa, @IdLote, @Descripcion", parameters);
         }
 
 
