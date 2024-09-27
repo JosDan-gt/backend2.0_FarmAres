@@ -92,16 +92,17 @@ namespace GranjaLosAres_API.Controllers
         [HttpGet("clasificacion/{idLote}/{periodo}")]
         public IActionResult GetClasificacion(int idLote, string periodo)
         {
-            // Consulta base para obtener todos los datos relevantes
+            // Consulta base para obtener todos los datos relevantes en base a la fecha de producción
             var baseQuery = _context.ClasificacionHuevos
                 .Where(c => c.IdProdNavigation.IdLote == idLote && c.Estado == true)
-                .OrderBy(c => c.FechaClaS)
+                .OrderBy(c => c.IdProdNavigation.FechaRegistroP) // Ordenar por la fecha de producción
                 .AsEnumerable();
 
             var clasificacion = periodo switch
             {
+                // Agrupar por la fecha de producción (diario)
                 "diario" => baseQuery
-                    .GroupBy(c => new { c.FechaClaS.Value.Date, c.Tamano })
+                    .GroupBy(c => new { c.IdProdNavigation.FechaRegistroP.Value.Date, c.Tamano })
                     .Select(g => new ClasificacionDto
                     {
                         FechaRegistro = g.Key.Date.ToString("yyyy-MM-dd"),
@@ -110,10 +111,11 @@ namespace GranjaLosAres_API.Controllers
                     })
                     .ToList(),
 
+                // Agrupar por la semana de la fecha de producción (semanal)
                 "semanal" => baseQuery
                     .GroupBy(c => new
                     {
-                        Week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(c.FechaClaS.Value, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday),
+                        Week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(c.IdProdNavigation.FechaRegistroP.Value, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday),
                         c.Tamano
                     })
                     .Select(g => new ClasificacionDto
@@ -124,8 +126,9 @@ namespace GranjaLosAres_API.Controllers
                     })
                     .ToList(),
 
+                // Agrupar por el mes y año de la fecha de producción (mensual)
                 "mensual" => baseQuery
-                    .GroupBy(c => new { c.FechaClaS.Value.Year, c.FechaClaS.Value.Month, c.Tamano })
+                    .GroupBy(c => new { c.IdProdNavigation.FechaRegistroP.Value.Year, c.IdProdNavigation.FechaRegistroP.Value.Month, c.Tamano })
                     .Select(g => new ClasificacionDto
                     {
                         FechaRegistro = $"{g.Key.Year}-{g.Key.Month:D2}",
@@ -139,6 +142,7 @@ namespace GranjaLosAres_API.Controllers
 
             return Ok(clasificacion);
         }
+
 
         public class ClasificacionDto
         {
