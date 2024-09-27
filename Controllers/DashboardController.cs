@@ -94,24 +94,23 @@ namespace GranjaLosAres_API.Controllers
         {
             // Consulta base para obtener todos los datos relevantes en base a la fecha de producción
             var baseQuery = _context.ClasificacionHuevos
-                .Where(c => c.IdProdNavigation.IdLote == idLote && c.Estado == true)
-                .OrderBy(c => c.IdProdNavigation.FechaRegistroP) // Ordenar por la fecha de producción
-                .AsEnumerable();
+                .Include(c => c.IdProdNavigation)  // Asegurarnos de cargar la relación
+                .Where(c => c.IdProdNavigation.IdLote == idLote && c.Estado == true && c.IdProdNavigation.FechaRegistroP.HasValue)
+                .OrderBy(c => c.IdProdNavigation.FechaRegistroP);
 
+            // Dependiendo del período, agrupar los datos de acuerdo con la fecha de producción
             var clasificacion = periodo switch
             {
-                // Agrupar por la fecha de producción (diario)
                 "diario" => baseQuery
                     .GroupBy(c => new { c.IdProdNavigation.FechaRegistroP.Value.Date, c.Tamano })
                     .Select(g => new ClasificacionDto
                     {
                         FechaRegistro = g.Key.Date.ToString("yyyy-MM-dd"),
                         Tamano = g.Key.Tamano,
-                        TotalUnitaria = g.Sum(c => c.TotalUnitaria)
+                        TotalUnitaria = g.Sum(c => c.TotalUnitaria ?? 0)  // Manejar null en TotalUnitaria
                     })
                     .ToList(),
 
-                // Agrupar por la semana de la fecha de producción (semanal)
                 "semanal" => baseQuery
                     .GroupBy(c => new
                     {
@@ -122,26 +121,35 @@ namespace GranjaLosAres_API.Controllers
                     {
                         FechaRegistro = $"Semana {g.Key.Week}",
                         Tamano = g.Key.Tamano,
-                        TotalUnitaria = g.Sum(c => c.TotalUnitaria)
+                        TotalUnitaria = g.Sum(c => c.TotalUnitaria ?? 0)  // Manejar null en TotalUnitaria
                     })
                     .ToList(),
 
-                // Agrupar por el mes y año de la fecha de producción (mensual)
                 "mensual" => baseQuery
                     .GroupBy(c => new { c.IdProdNavigation.FechaRegistroP.Value.Year, c.IdProdNavigation.FechaRegistroP.Value.Month, c.Tamano })
                     .Select(g => new ClasificacionDto
                     {
                         FechaRegistro = $"{g.Key.Year}-{g.Key.Month:D2}",
                         Tamano = g.Key.Tamano,
-                        TotalUnitaria = g.Sum(c => c.TotalUnitaria)
+                        TotalUnitaria = g.Sum(c => c.TotalUnitaria ?? 0)  // Manejar null en TotalUnitaria
                     })
                     .ToList(),
 
                 _ => throw new ArgumentException("Período no válido")
             };
 
-            return Ok(clasificacion);
+            // Devolver la clasificación o un mensaje de no encontrado
+            if (clasificacion.Any())
+            {
+                return Ok(clasificacion);
+            }
+            else
+            {
+                return NotFound(new { message = "No se encontraron datos para el lote y período especificados." });
+            }
         }
+
+
 
 
         public class ClasificacionDto
