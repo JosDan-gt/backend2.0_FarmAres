@@ -112,18 +112,21 @@ namespace GranjaLosAres_API.Controllers
                     .ToList(),
 
                 "semanal" => baseQuery
+                    .AsEnumerable() // Realizamos la agrupación en memoria después de obtener los datos de la DB
                     .GroupBy(c => new
                     {
-                        Week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(c.IdProdNavigation.FechaRegistroP.Value, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday),
+                        Week = GetWeekOfYear(c.IdProdNavigation.FechaRegistroP.Value),
+                        Year = c.IdProdNavigation.FechaRegistroP.Value.Year,
                         c.Tamano
                     })
                     .Select(g => new ClasificacionDto
                     {
-                        FechaRegistro = $"Semana {g.Key.Week}",
+                        FechaRegistro = $"Semana {g.Key.Week} del {g.Key.Year}",
                         Tamano = g.Key.Tamano,
-                        TotalUnitaria = g.Sum(c => c.TotalUnitaria ?? 0)  // Manejar null en TotalUnitaria
+                        TotalUnitaria = g.Sum(c => c.TotalUnitaria ?? 0)
                     })
                     .ToList(),
+
 
                 "mensual" => baseQuery
                     .GroupBy(c => new { c.IdProdNavigation.FechaRegistroP.Value.Year, c.IdProdNavigation.FechaRegistroP.Value.Month, c.Tamano })
@@ -148,6 +151,7 @@ namespace GranjaLosAres_API.Controllers
                 return NotFound(new { message = "No se encontraron datos para el lote y período especificados." });
             }
         }
+
 
 
 
