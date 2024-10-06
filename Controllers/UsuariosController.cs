@@ -70,6 +70,9 @@ namespace GranjaLosAres_API.Controllers
                 return BadRequest("El nombre de usuario o el correo electrónico ya están en uso.");
             }
 
+            // Hashear la contraseña antes de guardarla
+            usuario.Contrasena = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena);
+
             usuario.FechaDeRegistro = DateTime.Now;
             usuario.Estado = true;
 
@@ -78,6 +81,7 @@ namespace GranjaLosAres_API.Controllers
 
             return Ok(new { message = "Usuario registrado exitosamente" });
         }
+
 
 
 
@@ -98,7 +102,8 @@ namespace GranjaLosAres_API.Controllers
             // Solo actualizamos la contraseña si se proporciona
             if (!string.IsNullOrWhiteSpace(updatedUser.Contrasena))
             {
-                user.Contrasena = updatedUser.Contrasena;
+                // Hashear la nueva contraseña antes de guardarla
+                user.Contrasena = BCrypt.Net.BCrypt.HashPassword(updatedUser.Contrasena);
             }
 
             // Mantener el estado siempre en activo (true)
@@ -111,6 +116,7 @@ namespace GranjaLosAres_API.Controllers
 
             return Ok(new { message = "Usuario actualizado exitosamente" });
         }
+
 
 
 

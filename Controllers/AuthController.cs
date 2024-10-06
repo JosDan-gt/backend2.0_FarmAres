@@ -27,10 +27,10 @@ namespace GranjaLosAres_API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
             var user = await _context.Usuarios
-                         .Include(u => u.Role)  // Incluir el rol
+                         .Include(u => u.Role)
                          .SingleOrDefaultAsync(u => u.NombreUser == login.Username);
 
-            if (user == null || login.Password != user.Contrasena)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.Contrasena))
             {
                 return Unauthorized();
             }

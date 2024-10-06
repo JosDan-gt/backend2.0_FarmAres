@@ -137,3 +137,4 @@ C:\Users\aldan\Desktop\MIAPI Nueva\GranjaLosAres_API\obj\Debug\net8.0\refint\Gra
 C:\Users\aldan\Desktop\MIAPI Nueva\GranjaLosAres_API\obj\Debug\net8.0\GranjaLosAres_API.pdb
 C:\Users\aldan\Desktop\MIAPI Nueva\GranjaLosAres_API\obj\Debug\net8.0\GranjaLosAres_API.genruntimeconfig.cache
 C:\Users\aldan\Desktop\MIAPI Nueva\GranjaLosAres_API\obj\Debug\net8.0\ref\GranjaLosAres_API.dll
+C:\Users\aldan\Desktop\MIAPI Nueva\GranjaLosAres_API\bin\Debug\net8.0\BCrypt.Net-Next.dll
