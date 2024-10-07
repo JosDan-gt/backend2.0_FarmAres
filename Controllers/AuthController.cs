@@ -35,6 +35,11 @@ namespace GranjaLosAres_API.Controllers
                 return Unauthorized();
             }
 
+            if (!user.Estado)
+            {
+                return Unauthorized(new { message = "El usuario está deshabilitado. Contacte con el administrador." });
+            }
+
             // Depuración: Verificar si el rol está presente
             Console.WriteLine("El rol del usuario es: " + user.Role?.Nombre);
 
