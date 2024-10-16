@@ -163,6 +163,7 @@ namespace GranjaLosAres_API.Services
             {
                 new SqlParameter("@VentaID", venta.VentaId),
                 new SqlParameter("@ClienteID", venta.ClienteId),
+                new SqlParameter("@Fecha", venta.FechaVenta),
                 new SqlParameter("@DetallesVenta", SqlDbType.Structured)
                 {
                     TypeName = "dbo.DetallesVentaType",
@@ -172,7 +173,7 @@ namespace GranjaLosAres_API.Services
 
             // Ejecutar el procedimiento almacenado
             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC [dbo].[ActualizarVenta] @VentaID, @ClienteID, @DetallesVenta", parameters);
+                "EXEC [dbo].[ActualizarVenta] @VentaID, @ClienteID, @Fecha, @DetallesVenta", parameters);
         }
 
 

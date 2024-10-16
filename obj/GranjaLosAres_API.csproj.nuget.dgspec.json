@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aldan\\Desktop\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj": {}
+    "C:\\Users\\aldan\\Desktop\\final 2024\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aldan\\Desktop\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj": {
+    "C:\\Users\\aldan\\Desktop\\final 2024\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aldan\\Desktop\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj",
+        "projectUniqueName": "C:\\Users\\aldan\\Desktop\\final 2024\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj",
         "projectName": "GranjaLosAres_API",
-        "projectPath": "C:\\Users\\aldan\\Desktop\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj",
+        "projectPath": "C:\\Users\\aldan\\Desktop\\final 2024\\MIAPI Nueva\\GranjaLosAres_API\\GranjaLosAres_API.csproj",
         "packagesPath": "C:\\Users\\aldan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aldan\\Desktop\\MIAPI Nueva\\GranjaLosAres_API\\obj\\",
+        "outputPath": "C:\\Users\\aldan\\Desktop\\final 2024\\MIAPI Nueva\\GranjaLosAres_API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
