@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GranjaLosAres_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c15ace5cbb909aac64e125880abd9262b5d5dfce")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+088c5326e2daf0ca35f5148e4bc6fcefd3c6c775")]
 [assembly: System.Reflection.AssemblyProductAttribute("GranjaLosAres_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GranjaLosAres_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

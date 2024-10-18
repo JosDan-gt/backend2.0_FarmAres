@@ -152,6 +152,53 @@ namespace GranjaLosAres_API.Controllers
             }
         }
 
+        [HttpGet("estadolote/{idLote}/{periodo}")]
+        public IActionResult GetEstadoLote(int idLote, string periodo)
+        {
+            // Consulta base para obtener los datos del estado del lote
+            var baseQuery = _context.EstadoLotes
+                .Where(e => e.IdLote == idLote && e.Estado == true)
+                .OrderBy(e => e.FechaRegistro)
+                .AsEnumerable();
+
+            var estadoLote = periodo switch
+            {
+                "diario" => baseQuery
+                    .GroupBy(e => e.FechaRegistro.Date)  // Ya no necesitamos HasValue porque FechaRegistro siempre tiene un valor
+                    .Select(g => new EstadoLoteDto
+                    {
+                        FechaRegistro = g.Key.ToString("yyyy-MM-dd"),
+                        CantidadG = g.Sum(e => e.CantidadG),
+                        Bajas = g.Sum(e => e.Bajas)
+                    })
+                    .ToList(),
+
+                "semanal" => baseQuery
+                    .GroupBy(e => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(e.FechaRegistro, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday))
+                    .Select(g => new EstadoLoteDto
+                    {
+                        FechaRegistro = $"Semana {g.Key}",
+                        CantidadG = g.Sum(e => e.CantidadG),
+                        Bajas = g.Sum(e => e.Bajas)
+                    })
+                    .ToList(),
+
+                "mensual" => baseQuery
+                    .GroupBy(e => new { e.FechaRegistro.Year, e.FechaRegistro.Month })
+                    .Select(g => new EstadoLoteDto
+                    {
+                        FechaRegistro = $"{g.Key.Year}-{g.Key.Month:D2}",
+                        CantidadG = g.Sum(e => e.CantidadG),
+                        Bajas = g.Sum(e => e.Bajas)
+                    })
+                    .ToList(),
+
+                _ => throw new ArgumentException("Período no válido")
+            };
+
+            return Ok(estadoLote);
+        }
+
 
 
 
@@ -161,6 +208,12 @@ namespace GranjaLosAres_API.Controllers
             public string FechaRegistro { get; set; }
             public string Tamano { get; set; }
             public int? TotalUnitaria { get; set; }
+        }
+        public class EstadoLoteDto
+        {
+            public string FechaRegistro { get; set; }
+            public int CantidadG { get; set; }
+            public int Bajas { get; set; }
         }
 
 
