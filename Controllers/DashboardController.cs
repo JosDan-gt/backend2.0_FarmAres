@@ -121,7 +121,7 @@ namespace GranjaLosAres_API.Controllers
                     })
                     .Select(g => new ClasificacionDto
                     {
-                        FechaRegistro = $"Semana {g.Key.Week} del {g.Key.Year}",
+                        FechaRegistro = $"Semana {g.Key.Week}",
                         Tamano = g.Key.Tamano,
                         TotalUnitaria = g.Sum(c => c.TotalUnitaria ?? 0)
                     })
